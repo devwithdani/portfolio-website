@@ -1,5 +1,7 @@
-// ✅ SCRIPT FOR NAVIGATION INTERACTION
-
+/* ==========================================================================
+   Navigation
+   ========================================================================== */
+// Navigation link click handlers
 const navLinks = document.querySelectorAll(".desktop-nav a");
 
 navLinks.forEach((link) => {
@@ -8,33 +10,13 @@ navLinks.forEach((link) => {
   });
 });
 
-// Toggle for mobile navigation (optional burger if you add it later)
+// Mobile navigation toggle
 const hamburger = document.querySelector(".hamburger");
 if (hamburger) {
   hamburger.addEventListener("click", () => {
     document.querySelector(".nav-links").classList.toggle("active");
   });
 }
-
-// Smooth scroll behavior is already enabled via CSS (scroll-behavior: smooth)
-
-// Theme Toggle
-const themeToggle = document.getElementById('theme-toggle');
-const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-
-// Check for saved theme preference or use system preference
-const currentTheme = localStorage.getItem('theme') || 
-  (prefersDarkScheme.matches ? 'dark' : 'light');
-
-// Apply the current theme
-document.documentElement.setAttribute('data-theme', currentTheme);
-
-// Theme toggle click handler
-themeToggle.addEventListener('click', () => {
-  const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', newTheme);
-  localStorage.setItem('theme', newTheme);
-});
 
 // Smooth scroll for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -50,27 +32,10 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// Experience Tabs
-const tabButtons = document.querySelectorAll('.tab-button');
-const tabPanes = document.querySelectorAll('.tab-pane');
-
-tabButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    // Remove active class from all buttons and panes
-    tabButtons.forEach(btn => btn.classList.remove('active'));
-    tabPanes.forEach(pane => pane.classList.remove('active'));
-    
-    // Add active class to clicked button
-    button.classList.add('active');
-    
-    // Show corresponding tab pane
-    const tabId = button.getAttribute('data-tab');
-    document.getElementById(tabId).classList.add('active');
-  });
-});
-
+// Update active navigation based on scroll position
 function updateActiveNav() {
   const scrollPosition = window.scrollY + 100;
+  const sections = document.querySelectorAll('section[id]');
 
   sections.forEach(section => {
     const sectionTop = section.offsetTop;
@@ -90,4 +55,58 @@ function updateActiveNav() {
 
 window.addEventListener('scroll', () => {
   updateActiveNav();
+});
+
+/* ==========================================================================
+   Experience Tabs
+   ========================================================================== */
+const tabButtons = document.querySelectorAll('.tab-button');
+const tabPanes = document.querySelectorAll('.tab-pane');
+
+tabButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    // Remove active class from all buttons and panes
+    tabButtons.forEach(btn => btn.classList.remove('active'));
+    tabPanes.forEach(pane => pane.classList.remove('active'));
+    
+    // Add active class to clicked button
+    button.classList.add('active');
+    
+    // Show corresponding tab pane
+    const tabId = button.getAttribute('data-tab');
+    document.getElementById(tabId).classList.add('active');
+  });
+});
+
+/* ==========================================================================
+   Mouse Light Effect
+   ========================================================================== */
+// Wacht tot DOM volledig is geladen
+document.addEventListener('DOMContentLoaded', () => {
+  // Direct initialiseren en op window object zetten voor debugging
+  const mouseLight = document.querySelector('.mouse-light');
+  window.mouseLightElement = mouseLight;
+  
+  if (mouseLight) {
+    console.log('Mouse light element gevonden, activeren...');
+    
+    // Initialiseer startpositie in het midden
+    mouseLight.style.setProperty('--x', '50%');
+    mouseLight.style.setProperty('--y', '50%');
+    
+    // Listener voor muisbewegingen
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      
+      // Update de CSS variabelen
+      mouseLight.style.setProperty('--x', `${x}%`);
+      mouseLight.style.setProperty('--y', `${y}%`);
+    });
+    
+    // Zorg dat effect werkt bij pagina load
+    mouseLight.style.opacity = '1';
+  } else {
+    console.error('Mouse light element niet gevonden in de DOM');
+  }
 });
