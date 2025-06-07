@@ -3,18 +3,21 @@
    ========================================================================== */
 // Navigation link click handlers
 const navLinks = document.querySelectorAll(".desktop-nav a");
+const navMenu = document.querySelector(".desktop-nav");
 
 navLinks.forEach((link) => {
   link.addEventListener("click", () => {
-    document.querySelector(".nav-links").classList.remove("active");
+    if (navMenu) {
+      navMenu.classList.remove("active");
+    }
   });
 });
 
 // Mobile navigation toggle
 const hamburger = document.querySelector(".hamburger");
-if (hamburger) {
+if (hamburger && navMenu) {
   hamburger.addEventListener("click", () => {
-    document.querySelector(".nav-links").classList.toggle("active");
+    navMenu.classList.toggle("active");
   });
 }
 
